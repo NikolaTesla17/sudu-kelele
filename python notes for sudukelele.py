@@ -1,4 +1,4 @@
-#code to read from pin for mic?
+#code to read from pin for mic? will need to test cause this will be pwm
 
 
 #!/usr/bin/env python
@@ -20,3 +20,47 @@ GPIO.add_event_detect(INPUT_PIN, GPIO.FALLING, callback=inputLow, bouncetime=200
 while True:
     print('3.3');
     sleep(1);           # Sleep for a full second before restarting our loop
+
+
+
+#end code to read from mic pin
+
+#to output audio it seems we need to use an audio card so lets not worry about that or input quite yet
+# we can just gather noises and get button code
+
+import RPi.GPIO as GPIO
+import time
+
+# Set up GPIO numbering mode
+GPIO.setmode(GPIO.BCM)
+
+# Set up button pins //TODO figure out tf you actually want to use
+sockeye = 1
+king = 2
+silver = 3
+pink = 4
+chum = 5
+sockeyeLight = 6
+kingLight = 7
+silverLight = 8
+pinkLight = 9
+chumLight = 10
+10
+GPIO.setup(sockeye, GPIO.IN, pull_up_down=GPIO.PUD_UP)
+GPIO.setup(sockeyeLight,GPIO.OUT)
+
+def sockeye_callback(channel):#will eventually need functions to light up all of em and whatnot, might be able to pass pin as a parameter
+    GPIO.output(sockeye,GPIO.HIGH)#turn light on
+    time.sleep(0.5)
+    GPIO.output(sockeye,GPIO.HIGH)
+
+# Add event detection
+GPIO.add_event_detect(sockeye, GPIO.FALLING, callback=sockeye_callback, bouncetime=200)
+
+try:
+    print("Waiting for button press...")
+    while True:
+        time.sleep(0.1)
+
+except KeyboardInterrupt:
+    GPIO.cleanup()
